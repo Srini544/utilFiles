@@ -8,6 +8,9 @@ pipeline {
     options {
         timestamps()
     }
+    agent { dockerfile true
+          }
+        
     stages {
         stage('code') {
             steps {
