@@ -1,4 +1,4 @@
-def callCurlCommand{
+def callCurlCommand() {
     echo 'calling curl .... '
     sh("curl -s google.com")
 }
