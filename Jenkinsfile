@@ -4,7 +4,7 @@ def callCurlCommand() {
 }
 
 pipeline {
-    agent any
+    
     options {
         timestamps()
     }
