@@ -31,6 +31,12 @@ pipeline {
             steps {
                 echo 'build completed .... '
             }
+        stage('push to hub') {
+            steps {
+                echo 'image pushed .... '
+            }
         }
+        
+       }
     }
 }
