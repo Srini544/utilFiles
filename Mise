@@ -1,0 +1,9 @@
+docker build . -t <your own>
+docker run -it -p 8000:8000 <your own>
+curl http://127.0.0.1:8000
+
+docker build .
+docker run -d -p 8080:8080 <image_id>
+curl http://localhost:8080
+docker run -it -p 8081:8080 fec26ca11b0a
+docker run -it -p 8082:8080 fec26ca11b0a
