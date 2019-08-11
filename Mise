@@ -20,3 +20,13 @@ RUN mvn clean package
 RUN cp /target/gst.war /usr/local/tomcat/webapps
 EXPOSE 8080
 CMD /usr/local/tomcat/bin/catalina.sh run
+
+
+
+	curl -o /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
+	rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key
+    yum install jenkins
+	systemctl stop jenkins
+	systemctl status jenkins
+	systemctl enable jenkins
+	systemctl restart jenkins
