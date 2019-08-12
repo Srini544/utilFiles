@@ -14,7 +14,7 @@ pipeline {
         stage('code') {
             steps {
                 echo 'code completed .... '
-                sh 'setMe'
+                sh 'setMe.sh'
                 callCurlCommand()
             }
         }
