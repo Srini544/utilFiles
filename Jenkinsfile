@@ -21,6 +21,7 @@ pipeline {
         stage('build') {
             steps {
                 echo 'build completed .... '
+                app = docker.build('raghpatruni/srini7')
             }
         }    
         stage('deploy') {
@@ -35,7 +36,13 @@ pipeline {
         }
         stage('push to hub') {
             steps {
-                echo 'image pushed .... '
+                echo 'image pushed ...1. '
+                docker.withRegistry('https://cloud.docker.com','dockerhub')
+                echo 'image pushed ...2. '
+                docker.push('latest')
+                echo 'image pushed ...3. '
+                echo 'image pushed ...4. '
+                echo 'image pushed ...5. '
             }
         }
     }
