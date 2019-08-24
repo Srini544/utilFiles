@@ -7,6 +7,7 @@ pipeline {
   environment {
     registry = "raghupatruni/srini7"
     registryCredential = 'dockerhub'
+    dockerImage = ''
   }
     options {
         timestamps()
