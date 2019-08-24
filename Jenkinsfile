@@ -7,7 +7,7 @@ pipeline {
   environment {
     registry = "raghupatruni/srini7"
     registryCredential = 'dockerhub'
-    dockerImage = ''
+    dockerImage1 = ''
   }
     options {
         timestamps()
@@ -26,7 +26,7 @@ pipeline {
         stage('build') {
             steps {
                 echo 'build completed .... '
-                dockerImage = docker.build registry + ":$BUILD_NUMBER"
+                dockerImage1 = docker.build registry + ":$BUILD_NUMBER"
             }
         }    
         stage('deploy') {
@@ -43,7 +43,7 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry( '', registryCredential ) {
-                    dockerImage.push()
+                    dockerImage1.push()
                     }
                 }
             }
