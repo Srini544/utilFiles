@@ -4,6 +4,10 @@ def callCurlCommand() {
 
 pipeline {
     
+  environment {
+    registry = "raghupatruni/srini7"
+    registryCredential = 'dockerhub'
+  }
     options {
         timestamps()
     }
@@ -21,7 +25,7 @@ pipeline {
         stage('build') {
             steps {
                 echo 'build completed .... '
-                app = docker.build('raghpatruni/srini7')
+                dockerImage = docker.build registry + ":$BUILD_NUMBER"
             }
         }    
         stage('deploy') {
@@ -36,13 +40,11 @@ pipeline {
         }
         stage('push to hub') {
             steps {
-                echo 'image pushed ...1. '
-                docker.withRegistry('https://cloud.docker.com','dockerhub')
-                echo 'image pushed ...2. '
-                docker.push('latest')
-                echo 'image pushed ...3. '
-                echo 'image pushed ...4. '
-                echo 'image pushed ...5. '
+                script {
+                    docker.withRegistry( '', registryCredential ) {
+                    dockerImage.push()
+                    }
+                }
             }
         }
     }
