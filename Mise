@@ -30,3 +30,53 @@ CMD /usr/local/tomcat/bin/catalina.sh run
 	systemctl status jenkins
 	systemctl enable jenkins
 	systemctl restart jenkins
+
+===========================================
+Install jenkins on ubuntu
+
+sudo apt update
+sudo apt install openjdk-8-jdk
+wget -q -O - https://pkg.jenkins.io/debian/jenkins.io.key | sudo apt-key add -
+sudo sh -c 'echo deb http://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'
+sudo apt update
+sudo apt install jenkins
+systemctl status jenkins
+==============================================
+
+jenkins --> global --> Add credentials --> dockerhub --> enter raghupatruni/credentials
+
+pipeline {
+  environment {
+    registry = "raghupatruni/srini7"
+    registryCredential = 'dockerhub'
+  }
+  agent any
+  stages {
+    
+    stage('Building image') {
+      steps{
+        script {
+          dockerImage = docker.build registry + ":$BUILD_NUMBER"
+        }
+      }
+    }
+    
+    stage('Deploy Image') {
+      steps{
+        script {
+          docker.withRegistry( '', registryCredential ) {
+            dockerImage.push()
+          }
+        }
+      }
+    }
+    stage('Remove Unused docker image') {
+      steps{
+        sh "docker rmi $registry:$BUILD_NUMBER"
+      }
+    }
+    
+  }
+}
+
+==============================================
