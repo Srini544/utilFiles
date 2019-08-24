@@ -1,52 +1,34 @@
-def callCurlCommand() {
-    echo 'calling curl .... '
-}
-
 pipeline {
-    
+    agent any
   environment {
     registry = "raghupatruni/srini7"
     registryCredential = 'dockerhub'
-    dockerImage1 = ''
   }
-    options {
-        timestamps()
+  stages {
+    
+    stage('Building image') {
+      steps{
+        script {
+            docker.build("raghupatruni", "--no-cache -f Dockerfile .").push()
+          dockerImage = docker.build registry + ":$BUILD_NUMBER"
+        }
+      }
     }
-    agent { dockerfile true
+    
+    stage('Deploy Image') {
+      steps{
+        script {
+          docker.withRegistry( '', registryCredential ) {
+            dockerImage.push()
           }
-        
-    stages {
-        stage('code') {
-            steps {
-                echo 'code completed .... '
-                //sh 'setMe.sh'
-                //callCurlCommand()
-            }
         }
-        stage('build') {
-            steps {
-                echo 'build completed .... '
-                dockerImage1 = docker.build registry + ":$BUILD_NUMBER"
-            }
-        }    
-        stage('deploy') {
-            steps {
-                echo 'deploy completed .... '
-            }
-        }
-        stage('test') {
-            steps {
-                echo 'build completed .... '
-            }
-        }
-        stage('push to hub') {
-            steps {
-                script {
-                    docker.withRegistry( '', registryCredential ) {
-                    dockerImage1.push()
-                    }
-                }
-            }
-        }
+      }
     }
+    stage('Remove Unused docker image') {
+      steps{
+        sh "docker rmi $registry:$BUILD_NUMBER"
+      }
+    }
+    
+  }
 }
