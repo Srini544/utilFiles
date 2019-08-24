@@ -12,6 +12,7 @@ pipeline {
             docker.withRegistry( '', registryCredential ) {
             docker.build("raghupatruni", "--no-cache -f Dockerfile .").push()
           dockerImage = docker.build registry + ":$BUILD_NUMBER"
+            }
         }
       }
     }
